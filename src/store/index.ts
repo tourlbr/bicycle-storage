@@ -1,12 +1,11 @@
 import { createStore } from 'vuex';
 
+import { homeStore } from '@/modules/Home';
+import { aboutStore } from '@/modules/About';
+
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    homeStore,
+    aboutStore,
   },
 });
