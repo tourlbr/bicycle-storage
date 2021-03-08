@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: bicycle-storage
+    image: bicycle-storage
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ".:/usr/app"
+      - "/usr/app/node_modules"
+    ports:
+      - 8080:8080
+    networks:
+      - bicycle-storage
+networks:
+  bicycle-storage:
+    ipam:
+      config:
+        - subnet: 172.181.0.0/16
