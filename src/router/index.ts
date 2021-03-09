@@ -1,11 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import { aboutRoutes } from '@/modules/About';
-import { homeRoutes } from '@/modules/Home';
+import { mapRoutes } from '../modules/Map';
 
 const routes: Array<RouteRecordRaw> = [
-  ...homeRoutes,
-  ...aboutRoutes,
+  ...mapRoutes,
 ];
 
 const router = createRouter({
