@@ -58,12 +58,14 @@ export default {
       };
       // make a marker for each feature and add to the map
       geojson.features.forEach((marker) => {
+        const { coordinates } = marker.geometry;
         // create the popup
         const popup = new mapboxgl.Popup({ offset: 25 }).setText(
           'Construction on the Washington Monument began in 1848.',
         );
+
         new mapboxgl.Marker()
-          .setLngLat(marker.geometry.coordinates)
+          .setLngLat(coordinates as [number, number])
           .setPopup(popup)
           .addTo(map);
       });

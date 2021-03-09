@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import { bicycleStorageRoutes } from '../modules/BicycleStorage';
+import { mapRoutes } from '../modules/Map';
 
 const routes: Array<RouteRecordRaw> = [
-  ...bicycleStorageRoutes,
+  ...mapRoutes,
 ];
 
 const router = createRouter({
