@@ -1,11 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import { aboutRoutes } from '@/modules/About';
-import { homeRoutes } from '@/modules/Home';
+import { bicycleStorageRoutes } from '../modules/BicycleStorage';
 
 const routes: Array<RouteRecordRaw> = [
-  ...homeRoutes,
-  ...aboutRoutes,
+  ...bicycleStorageRoutes,
 ];
 
 const router = createRouter({
