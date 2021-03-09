@@ -17,15 +17,17 @@ export default {
   setup() {
     // Get store
     const store = useStore();
-    // Trigger store action to getBicycleParkingFacilities
-    store.dispatch('getBicycleParkingFacilities');
+
     // Initialize map
     const initializeMap = () => {
+      // Trigger store action to getBicycleParkingFacilities
+      store.dispatch('getBicycleParkingFacilities');
+
       // Get bicycleParkingFacilities state from store
       const bicycleParkingFacilities: ComputedRef<BicycleParkingFacility[]> = computed(
         () => store.getters.allBicycleParkingFacilities,
       );
-      console.log();
+
       // Custom mapboxgl Config
       const mapboxglConfig: MapboxOptions = {
         container: 'map',
@@ -52,8 +54,8 @@ export default {
           // Create popup with necessary data
           const popup = new mapboxgl.Popup({ offset: 25 })
             .setHTML(`
-            <strong>Fietsenstalling ${fields.facilityname}</strong>
-            <p>Last updated ${format(new Date(fields.time), 'HH:mm')}</p>
+            <p><strong>Fietsenstalling ${fields.facilityname}</strong></p>
+            <p>Last updated ${format(new Date(fields.time), 'HH:mm:ss')}</p>
             <div><div>Totaal aantal plaatsen: <strong>${fields.totalplaces}</strong> </div>
             <div>Beschikbare plaatsen: <strong>${fields.freeplaces}</strong></div></div>`);
 
@@ -67,7 +69,9 @@ export default {
     };
 
     // Lifecycle hooks
-    onMounted(initializeMap);
+    onMounted(() => {
+      setInterval(initializeMap, 60000);
+    });
 
     return {
       initializeMap,
