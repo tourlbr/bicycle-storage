@@ -3,14 +3,29 @@
 </template>
 
 <script lang=ts>
-import { onMounted } from '@vue/runtime-core';
+import {
+  computed, ComputedRef, onMounted,
+} from '@vue/runtime-core';
+import { useStore } from 'vuex';
 import mapboxgl, { MapboxOptions } from 'mapbox-gl';
+import { format } from 'date-fns';
+
+import { BicycleParkingFacility } from '../Map.types';
 
 export default {
   name: 'Map',
   setup() {
+    // Get store
+    const store = useStore();
+    // Trigger store action to getBicycleParkingFacilities
+    store.dispatch('getBicycleParkingFacilities');
     // Initialize map
     const initializeMap = () => {
+      // Get bicycleParkingFacilities state from store
+      const bicycleParkingFacilities: ComputedRef<BicycleParkingFacility[]> = computed(
+        () => store.getters.allBicycleParkingFacilities,
+      );
+      console.log();
       // Custom mapboxgl Config
       const mapboxglConfig: MapboxOptions = {
         container: 'map',
@@ -28,49 +43,30 @@ export default {
       // Create new mapboxgl map with custom config
       const map = new mapboxgl.Map(mapboxglConfig);
 
+      if (bicycleParkingFacilities.value) {
       // Add markers with GeoJSON
       // ========================
-      // @TODO:get data from Vuex store
-      const geojson = {
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [3.7167481, 51.0366828],
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'Citadelpark',
-          },
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [3.7309775, 51.067544],
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'Dok Noord',
-          },
-        }],
-      };
-      // make a marker for each feature and add to the map
-      geojson.features.forEach((marker) => {
-        const { coordinates } = marker.geometry;
-        // create the popup
-        const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-          'Construction on the Washington Monument began in 1848.',
-        );
+        bicycleParkingFacilities.value.forEach((bicycleParkingFacility: BicycleParkingFacility) => {
+          const { fields, geometry } = bicycleParkingFacility;
 
-        new mapboxgl.Marker()
-          .setLngLat(coordinates as [number, number])
-          .setPopup(popup)
-          .addTo(map);
-      });
+          // Create popup with necessary data
+          const popup = new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`
+            <strong>Fietsenstalling ${fields.facilityname}</strong>
+            <p>Last updated ${format(new Date(fields.time), 'HH:mm')}</p>
+            <div><div>Totaal aantal plaatsen: <strong>${fields.totalplaces}</strong> </div>
+            <div>Beschikbare plaatsen: <strong>${fields.freeplaces}</strong></div></div>`);
+
+          // make a marker for each feature and add to the map
+          new mapboxgl.Marker()
+            .setLngLat(geometry.coordinates as [number, number])
+            .setPopup(popup)
+            .addTo(map);
+        });
+      }
     };
 
+    // Lifecycle hooks
     onMounted(initializeMap);
 
     return {
