@@ -9,7 +9,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/geojson": "^7946.0.7",
+    "@vue/runtime-core": "^3.0.7",
     "core-js": "^3.6.5",
+    "mapbox-gl": "^2.1.1",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",
@@ -17,6 +20,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/mapbox-gl": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
