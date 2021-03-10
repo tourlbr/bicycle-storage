@@ -14,6 +14,7 @@ export const actions = {
     };
 
     axios.get(`${datasetUrl}/${datasetUri}`, options)
-      .then((response) => commit('SET_BICYCLE_PARKING_FACILITIES', response.data));
+      .then((response) => commit('SET_BICYCLE_PARKING_FACILITIES', response.data))
+      .catch((err) => console.log(err));
   },
 };
